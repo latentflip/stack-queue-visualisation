@@ -1,0 +1,38 @@
+<script src='jquery.min.js'></script>
+<script>
+  var delay = function(n) {
+    var a = 0;
+    for(var i=0; i<n*900000; i++) {
+      a++;
+    }
+  }
+
+  var instrument = function(name, fn) {
+    return function() {
+
+      var stackEl = $('<li>').text(name + "(" + Array.prototype.slice.call(arguments, 0).join(', ') + ")");
+      $('ul').append(stackEl);
+      
+      console.log("Running function " + name)
+      
+      var result = fn.apply(fn, Array.prototype.slice.call(arguments, 0));
+      delay(1000)
+      console.log("Ran function " + name)
+      return result
+    }
+  }
+
+  var dbl = instrument('double', function(n) { return 2*n })
+  var add = instrument('add', function(n) { return 1 + n })
+  
+  var log = instrument('log', function(n) { console.log("The number is ", n) })
+
+  $(function() {
+    log(add(dbl(5)))
+  })
+
+</script>
+
+
+<ul>
+</li>
